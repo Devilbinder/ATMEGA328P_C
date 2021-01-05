@@ -1,9 +1,11 @@
+# **ATmega328P Programming**
 
-I will add someting nicer here when work is not all consuming. Xmas rush
+This is the supporing reposatory for the ATmega328P Programming video series.
 
-Video playlist
 
-https://www.youtube.com/watch?v=BHryCFw2U30&list=PLtuqBdbsL-DvbB6QAGgoGBAEsGuXfGFoF
+# *Video playlist*
+
+[![ATmega328P Programming Playlist](https://img.youtube.com/vi/BHryCFw2U30/0.jpg)](https://www.youtube.com/watch?v=BHryCFw2U30&list=PLtuqBdbsL-DvbB6QAGgoGBAEsGuXfGFoF "ATmega328P Programming Playlist")
 
 
 ☕Coffee Funds☕.
