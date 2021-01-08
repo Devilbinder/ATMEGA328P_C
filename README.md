@@ -1,7 +1,6 @@
 # **ATmega328P Programming**
 
-This is the supporing reposatory for the ATmega328P Programming video series.
-
+This is the supporting repository for the ATmega328P Programming video series.
 
 # *Video playlist*
 
