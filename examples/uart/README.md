@@ -1,4 +1,4 @@
-# **Interrupts**
+# **Serial UART**
  
 This demonstrates the how to setup the Serial UART.
 
