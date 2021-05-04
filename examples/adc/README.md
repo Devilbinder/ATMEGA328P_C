@@ -1,6 +1,6 @@
 # **Analog to Digital Converter (ADC)**
  
-This demonstrates the how to setup the Analog to Digital Converter (ADC.
+This demonstrates the how to setup the Analog to Digital Converter (ADC).
 
 [![Analog to Digital Converter (ADC) 🔴 ATmega328P Programming #8](https://img.youtube.com/vi/jVAyT2XUiqU/0.jpg)](https://www.youtube.com/watch?v=jVAyT2XUiqU "Analog to Digital Converter (ADC) 🔴 ATmega328P Programming #8")
 
