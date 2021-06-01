@@ -1,8 +1,8 @@
 # **Interrupts**
  
-This demonstrates the how to use the external Interrupts and an overview of Interrupts in general.
+This demonstrates the how to use the external Interrupts and an overview of Interrupts in general on a ATmega328P.
 
-[![Interrupts 🔴 ATmega328P Programming #6](https://img.youtube.com/vi/eZH4B4PIIPU/0.jpg)](https://www.youtube.com/watch?v=eZH4B4PIIPU "Interrupts 🔴 ATmega328P Programming #6")
+[![Interrupts 🔴 ATmega328P Programming #6 AVR microcontroller with Atmel Studio](https://img.youtube.com/vi/eZH4B4PIIPU/0.jpg)](https://www.youtube.com/watch?v=eZH4B4PIIPU "Interrupts 🔴 ATmega328P Programming #6 AVR microcontroller with Atmel Studio")
 
 ☕Coffee Funds☕.
 

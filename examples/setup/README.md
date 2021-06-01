@@ -2,7 +2,7 @@
 
 This is the base project setup for the follow up ATmega328P programming tutorials.
 
-[![Project Setup 🔴 ATmega328P Programming #3](https://img.youtube.com/vi/ztfq7O9mt5U/0.jpg)](https://www.youtube.com/watch?v=ztfq7O9mt5U "Project Setup 🔴 ATmega328P Programming #3")
+[![Project Setup 🔴 ATmega328P Programming #3 AVR microcontroller with Atmel Studio](https://img.youtube.com/vi/ztfq7O9mt5U/0.jpg)](https://www.youtube.com/watch?v=ztfq7O9mt5U "Project Setup 🔴 ATmega328P Programming #3 AVR microcontroller with Atmel Studio")
 
 ☕Coffee Funds☕.
 

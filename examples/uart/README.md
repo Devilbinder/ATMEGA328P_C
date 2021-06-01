@@ -1,8 +1,8 @@
 # **Serial UART**
  
-This demonstrates the how to setup the Serial UART.
+This demonstrates the how to setup the Serial UART on a ATmega328P.
 
-[![Serial UART 🔴 ATmega328P Programming #7](https://img.youtube.com/vi/Z1CFM-j8hfk/0.jpg)](https://www.youtube.com/watch?v=Z1CFM-j8hfk "Serial UART 🔴 ATmega328P Programming #7")
+[![Serial UART 🔴 ATmega328P Programming #7 AVR microcontroller with Atmel Studio](https://img.youtube.com/vi/Z1CFM-j8hfk/0.jpg)](https://www.youtube.com/watch?v=Z1CFM-j8hfk "Serial UART 🔴 ATmega328P Programming #7  AVR microcontroller with Atmel Studio")
 
 ☕Coffee Funds☕.
 

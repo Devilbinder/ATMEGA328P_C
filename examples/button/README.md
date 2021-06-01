@@ -1,8 +1,8 @@
 # **Buttons as Inputs**
 
-This demonstrates the how to use the GPIO as inputs with buttons.
+This demonstrates the how to use the GPIO as inputs with buttons on a ATmega328P.
 
-[![Buttons as Inputs 🔴 ATmega328P Programming #5](https://img.youtube.com/vi/AKv3cxVH9y0/0.jpg)](https://www.youtube.com/watch?v=AKv3cxVH9y0 "Buttons as Inputs 🔴 ATmega328P Programming #5")
+[![Buttons as Inputs 🔴 ATmega328P Programming #5 AVR microcontroller with Atmel Studio](https://img.youtube.com/vi/AKv3cxVH9y0/0.jpg)](https://www.youtube.com/watch?v=AKv3cxVH9y0 "Buttons as Inputs 🔴 ATmega328P Programming #5 AVR microcontroller with Atmel Studio")
 
 ☕Coffee Funds☕.
 
