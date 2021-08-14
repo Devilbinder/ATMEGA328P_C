@@ -20,33 +20,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
 
+#ifndef TWI_HAL_H_
+#define TWI_HAL_H_
 
-#include "timer0_hal.h"
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include "config.h"
+#include <avr/io.h>
+#include <avr/interrupt.h>
+#include "uart_hal.h"
+
+#define TWI_TIMEOUT 1600
+
+#define TWI_START		0x08
+#define TWI_RSTART		0x10
+#define TWIT_ADDR_ACK	0x18
+#define TWIT_ADDR_NACK	0x20
+#define TWIT_DATA_ACK	0x28
+#define TWIT_DATA_NACK	0x30
+
+#define TWIR_ADDR_ACK	0x40
+#define TWIR_ADDR_NACK	0x48
+#define TWIR_DATA_ACK	0x50
+#define TWIR_DATA_NACK	0x58
+
+#define TWI_ERROR		0x38
+#define TWI_NONE		0xF8
+
+enum{
+	TWI_OK,
+	TWI_ERROR_START,
+	TWI_ERROR_RSTART,
+	TWI_NACK
+};
 
 
-volatile static uint32_t millis_c = 0;
+void twi_init(uint32_t speed);
+uint8_t twi_wire(uint8_t addr,uint8_t reg,uint8_t *data,uint16_t len);
+uint8_t twi_read(uint8_t addr,uint8_t reg,uint8_t *data,uint16_t len);
 
-ISR(TIMER0_COMPA_vect){
-	millis_c++;
-}
-
-
-
-void timer0_init(void){
-	TCCR0A |= (0b10 << WGM00);
-	OCR0A = 249; // TOP value
-	TIMSK0 |= (1 << OCIE0A);
-	TCCR0B |= (0b011<< CS00);	
-}
-
-
-uint32_t millis(void){
-	return millis_c;
-}
-
-
-uint8_t millis_end(uint32_t start_time,uint32_t delay_time){
-	
-	return ((millis() - start_time) >= delay_time);
-	
-}
+#endif /* TWI_HAL_H_ */

@@ -70,6 +70,14 @@ void uart_send_byte(uint8_t c){
 	UDR0 = c;
 }
 
+int uart_stream_byte(char c, FILE *stream){
+	if (c == '\n') uart_stream_byte('\r', stream);
+	while(uart_tx_busy == 0);
+	uart_tx_busy = 0;
+	UDR0 = c;
+	return 0;
+}
+
 void uart_send_array(uint8_t *c,uint16_t len){
 	for(uint16_t i = 0; i < len;i++){
 		uart_send_byte(c[i]);
@@ -101,4 +109,11 @@ uint8_t uart_read(void){
 		rx_read_pos = 0;
 	}
 	return data;
+}
+
+FILE uart_output = FDEV_SETUP_STREAM(uart_stream_byte, NULL, _FDEV_SETUP_WRITE);
+
+void stdio_init(void){
+	stdout = &uart_output;
+	
 }

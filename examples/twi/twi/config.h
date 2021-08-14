@@ -18,35 +18,14 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
- */ 
+ */  
 
 
-#include "timer0_hal.h"
+#ifndef CONFIG_H_
+#define CONFIG_H_
 
 
-volatile static uint32_t millis_c = 0;
-
-ISR(TIMER0_COMPA_vect){
-	millis_c++;
-}
+#define F_CPU 16000000UL
 
 
-
-void timer0_init(void){
-	TCCR0A |= (0b10 << WGM00);
-	OCR0A = 249; // TOP value
-	TIMSK0 |= (1 << OCIE0A);
-	TCCR0B |= (0b011<< CS00);	
-}
-
-
-uint32_t millis(void){
-	return millis_c;
-}
-
-
-uint8_t millis_end(uint32_t start_time,uint32_t delay_time){
-	
-	return ((millis() - start_time) >= delay_time);
-	
-}
+#endif /* CONFIG_H_ */

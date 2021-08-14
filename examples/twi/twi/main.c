@@ -31,39 +31,79 @@ SOFTWARE.
 #include "uart_hal.h"
 #include "adc_hal.h"
 #include "timer0_hal.h"
+#include "twi_hal.h"
 
-uint8_t print_buffer[64] = {0};
+static char print_buffer[64] = {0};
+	
+#define RTC_ADDR (0x68)
 
 int main(void)
 {
-	const uint8_t start[] = "\n\rProgram Start\n\r";
+	const char start[] = "\n\rProgram Start\n\r";
 	uint8_t run = 0;
 	uint16_t adc = 0;
 	uint32_t holder = 0;
+	uint32_t rtc_interval = 0;
+	uint8_t err = 0;
 	
 	DDRD &= 0xF0;
 	DDRB &= 0x0F;
 	uart_init(9600,0);
 	adc_init();
-	adc_pin_enable(ADC5_PIN);
-	adc_pin_select(ADC5_PIN);
-	
+	adc_pin_enable(ADC3_PIN);
+	adc_pin_select(ADC3_PIN);
 	timer0_init();
 	
-	sei();
+	twi_init(100000); //100khz
 	
+	uint8_t rtc_data[7] = {0x50,0x59,0x23,0x07,0x31,0x10,0x20};
+	
+	sei();
+
 	uart_send_string((uint8_t*)start);
-	PORTD &= 0x0F;
-	PORTB &= 0xF0;
-	PORTD |= ((run & 0x0F) << 4);
-	PORTB |= ((run & 0xF0) >> 4);
 	
 	adc = adc_convert();
 	holder = millis();
 	
-    while (1) 
+	
+	err = twi_wire(RTC_ADDR,0x00,rtc_data,sizeof(rtc_data));
+	if(err != TWI_OK){
+		memset(print_buffer,0,sizeof(print_buffer));
+		sprintf(print_buffer,"%d error %d\r\n\n",__LINE__,err);
+		uart_send_string((uint8_t*)print_buffer);
+		while(1);
+	}
+	
+	
+	rtc_interval = millis();
+    while(1) 
     {
 		
+		if(millis_end(rtc_interval,500)){
+			
+			err = twi_read(RTC_ADDR,0x00,rtc_data,sizeof(rtc_data));
+			if(err != TWI_OK){
+				memset(print_buffer,0,sizeof(print_buffer));
+				sprintf(print_buffer,"%d error %d\r\n\n",__LINE__,err);
+				uart_send_string((uint8_t*)print_buffer);
+				while(1);
+			}
+			
+			memset(print_buffer,0,sizeof(print_buffer));
+			sprintf(print_buffer,"\r20%02x/%02x/%02x %02x:%02x:%02x",
+			rtc_data[6],
+			rtc_data[5],
+			rtc_data[4],
+			rtc_data[2],
+			rtc_data[1],
+			rtc_data[0]
+			);
+			uart_send_string((uint8_t*)print_buffer);
+			
+			
+			rtc_interval = millis();
+		}
+
 		if(millis_end(holder,adc)){
 			run++;
 			PORTD &= 0x0F;

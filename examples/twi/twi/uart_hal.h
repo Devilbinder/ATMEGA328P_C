@@ -20,33 +20,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
 
+#ifndef UART_HAL_H_
+#define UART_HAL_H_
 
-#include "timer0_hal.h"
+#include <stdio.h>
+#include <stdint.h>
+#include "config.h"
+#include <avr/io.h>
+#include <util/delay.h>
+#include <avr/interrupt.h>
 
+#define RX_BUFFER_SIZE 128
 
-volatile static uint32_t millis_c = 0;
-
-ISR(TIMER0_COMPA_vect){
-	millis_c++;
-}
-
-
-
-void timer0_init(void){
-	TCCR0A |= (0b10 << WGM00);
-	OCR0A = 249; // TOP value
-	TIMSK0 |= (1 << OCIE0A);
-	TCCR0B |= (0b011<< CS00);	
-}
-
-
-uint32_t millis(void){
-	return millis_c;
-}
+void uart_init(uint32_t baud,uint8_t high_speed);
+void uart_send_byte(uint8_t c);
+int uart_stream_byte(char c, FILE *stream);
+void uart_send_array(uint8_t *c,uint16_t len);
+void uart_send_string(uint8_t *c);
+uint16_t uart_read_count(void);
+uint8_t uart_read(void);
+void stdio_init(void);
 
 
-uint8_t millis_end(uint32_t start_time,uint32_t delay_time){
-	
-	return ((millis() - start_time) >= delay_time);
-	
-}
+#endif /* UART_HAL_H_ */
