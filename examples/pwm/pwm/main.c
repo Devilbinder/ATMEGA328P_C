@@ -20,7 +20,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
  
- 
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,52 +29,35 @@ SOFTWARE.
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "uart_hal.h"
+#include "timer1_hal.h"
 #include "timer0_hal.h"
-#include "wdt_hal.h"
-//#include "avr/wdt.h"
 
 
-static char print_buffer[64] = {0};
 
 int main(void)
 {
-	uint8_t i = 0;
-	WDT_off(0);
-	WDT_prescaler_change(0,wdt_timeout_2s);
-	
-	DDRD |= (1 << DDD7) | (1 << DDD6);
-	
-	for(i = 0; i < 3; i++){ //4*3 1200ms
-		PORTD |= (1 << PORTD7 | 1 << PORTD6);
-		_delay_ms(200);
-		PORTD &= ~(1 << PORTD7 | 1 << PORTD6);
-		_delay_ms(200);
-	}
-	
 	uart_init(9600,0);
 
-
-	sei();
-	uart_send_string((uint8_t*)"\n\rProgram Start\n\r");
+	pwm_init();
+    sei();
 	
 	
-	
-    while(1) 
+	servo_set(0,180);
+	int16_t i = 0; 
+    while (1) 
     {
-		for(i = 0; i < 15; i++){ //15*4 6000ms 
-			PORTD |= 1 << PORTD7;
-			PORTD &= ~(1 << PORTD6);
-			_delay_ms(200);
-			PORTD |= 1 << PORTD6;
-			PORTD &= ~(1 << PORTD7);
-			_delay_ms(200);
-			wdr();
-		}
-		break;
-    }
-	wdr();
-	while(1){
 		
-	}
+		for(i = 0; i <= 180; i++){
+			servo_set(i,180);
+			_delay_ms(40);
+		}
+		for(i = 180; i >= 0; i--){
+			servo_set(i,180);
+			_delay_ms(40);
+		}
+		
+		
+
+    }
 }
 

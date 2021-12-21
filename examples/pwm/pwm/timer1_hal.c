@@ -20,62 +20,74 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
  */ 
  
- 
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "config.h"
-#include <avr/io.h>
-#include <util/delay.h>
-#include <avr/interrupt.h>
-#include "uart_hal.h"
-#include "timer0_hal.h"
-#include "wdt_hal.h"
-//#include "avr/wdt.h"
+#include "timer1_hal.h"
 
 
-static char print_buffer[64] = {0};
+volatile static uint8_t update_pwm_ready = 0;
 
-int main(void)
-{
-	uint8_t i = 0;
-	WDT_off(0);
-	WDT_prescaler_change(0,wdt_timeout_2s);
+ISR(TIMER1_OVF_vect){
 	
-	DDRD |= (1 << DDD7) | (1 << DDD6);
+	update_pwm_ready = 0;
+}
+
+ISR(TIMER1_COMPA_vect){
 	
-	for(i = 0; i < 3; i++){ //4*3 1200ms
-		PORTD |= (1 << PORTD7 | 1 << PORTD6);
-		_delay_ms(200);
-		PORTD &= ~(1 << PORTD7 | 1 << PORTD6);
-		_delay_ms(200);
+}
+
+
+
+void pwm_init(void){
+	
+	DDRB |= (1 << DDB1);
+	
+	TCCR1A = (0b10 << COM1A0) | (0b00 << COM1B0) | (0b10 << WGM10);
+	
+	TIMSK1 = (1 << TOIE1) | (1 << OCIE1A);
+
+	OCR1AH = (SEVRO_MIN & 0xFF00) >> 8;
+	OCR1AL = (SEVRO_MIN & 0x00FF);
+	
+	ICR1H = (PWM_TOP & 0xFF00) >> 8;
+	ICR1L = (PWM_TOP & 0x00FF);
+	
+	
+	
+	
+	TCCR1B = (0b11 << WGM12) | (0b010 << CS10);
+	
+}
+
+static void update_pwm(uint16_t i){
+	update_pwm_ready = 1;
+	while(update_pwm_ready != 0);
+	OCR1AH = (i & 0xFF00) >> 8;
+	OCR1AL = (i & 0x00FF);
+}
+
+void pwm_sweep(void){
+	uint16_t i = 0;
+	for(i = SEVRO_MIN; i <= SEVRO_MAX;i=+50){
+		update_pwm(i);
+		_delay_ms(40);
 	}
-	
-	uart_init(9600,0);
-
-
-	sei();
-	uart_send_string((uint8_t*)"\n\rProgram Start\n\r");
-	
-	
-	
-    while(1) 
-    {
-		for(i = 0; i < 15; i++){ //15*4 6000ms 
-			PORTD |= 1 << PORTD7;
-			PORTD &= ~(1 << PORTD6);
-			_delay_ms(200);
-			PORTD |= 1 << PORTD6;
-			PORTD &= ~(1 << PORTD7);
-			_delay_ms(200);
-			wdr();
-		}
-		break;
-    }
-	wdr();
-	while(1){
-		
+	for(i = SEVRO_MAX; i >= SEVRO_MIN;i-=50){
+		update_pwm(i);
+		_delay_ms(40);
 	}
 }
+
+
+void servo_set(uint16_t deg,uint16_t max_deg){
+	
+	float set = (float)deg / (float)max_deg;
+	
+	set = (((float)SEVRO_MAX-(float)SEVRO_MIN)*set) + (float)SEVRO_MIN;
+	
+	uint16_t piont = (uint16_t)set;
+	
+	update_pwm(piont);
+	
+}
+
+
 
