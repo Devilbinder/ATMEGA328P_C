@@ -66,7 +66,7 @@ static void update_pwm(uint16_t i){
 
 void pwm_sweep(void){
 	uint16_t i = 0;
-	for(i = SEVRO_MIN; i <= SEVRO_MAX;i=+50){
+	for(i = SEVRO_MIN; i <= SEVRO_MAX;i+=50){
 		update_pwm(i);
 		_delay_ms(40);
 	}
